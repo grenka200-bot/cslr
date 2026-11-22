@@ -1,0 +1,7 @@
+find_package(GTest REQUIRED)
+find_package(Threads REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GMP REQUIRED IMPORTED_TARGET gmp)
+add_executable(rsa_tests rsa_tests.cc)
+target_include_directories(rsa_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(rsa_tests PRIVATE GTest::gtest GTest::gtest_main PkgConfig::GMP Threads::Threads)
