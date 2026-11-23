@@ -806,7 +806,7 @@ static void LPS(uint8_t *state)
     uint64_t out[8] = {0};
     for (int i = 0; i < 8; i++) {
         for (int k = 0; k < 8; k++)
-            out[i] ^= Ax[k][state[i * 8 + k]];
+            out[i] ^= Ax[k][state[k * 8 + i]];
     }
     for (int i = 0; i < 8; i++)
         for (int k = 0; k < 8; k++)
@@ -815,7 +815,9 @@ static void LPS(uint8_t *state)
 
 static void key_schedule(uint8_t *K, int i)
 {
-    xor512(K, C[i], K);
+    for (int j = 0; j < 64; j++) {
+        K[j] ^= C[i][63 - j]; // берём константу C в Little-Endian!
+    }
     LPS(K);
 }
 
